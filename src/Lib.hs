@@ -1,33 +1,19 @@
 module Lib
-    ( splitOn
-    , groupsOf
-    , windows
-    , windowsN
-    , enumerate
+    ( solvers
+    , solutions
     ) where
 
-splitOn :: (a->Bool) -> [a] -> [[a]]
-splitOn on s = uncurry (:) $ fmap f $ break on s 
-    where f x = if null x then [] else splitOn on $ tail x
+import Solver
 
-groupsOf :: Int -> [a] -> [[a]]
-groupsOf size lst = case splitAt size lst of
-    (x, []) -> [x]
-    (x, y) -> x:groupsOf size y
+import Day1
+import Day2
+import Day3
+import Day4
+import Day5
+import Day6
 
-windows :: Int -> [a] -> [[a]]
-windows _ [] = []
-windows n xs = let window = take n xs
-    in if length window < n then [] else window:windows n (tail xs)
+solvers :: [Solver]
+solvers = [day1, day2, day3, day4, day5, day6]
 
-windowsN :: Int -> [a] -> [(Int, [a])]
-windowsN xs n = enumerate $ windows xs n
-
-enumerate :: [a] -> [(Int, a)]
-enumerate = enumerate' 0
-    where enumerate' n (x:xs) = (n, x):enumerate' (n+1) xs
-          enumerate' n [] = []
-
-intersection :: Eq a => [a] -> [a] -> [a]
-intersection xs ys = [x | x <- xs, y <- ys, x == y]
-
+solutions :: IO [Solution]
+solutions = sequence $ runSolver <$> solvers
