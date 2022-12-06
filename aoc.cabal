@@ -32,6 +32,8 @@ library
       Day5
       Day6
       Lib
+      Solver
+      Util
   other-modules:
       Paths_aoc
   hs-source-dirs:
