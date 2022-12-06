@@ -4,8 +4,8 @@ module Main (main) where
 --import Day2
 --import Day3
 --import Day4
-import Day5
+--import Day5
+import Day6
 
 main :: IO ()
-main = day5 >>= print
---main = print$ loop apl 8 where apl (x,n) = (x+1, n-1)
+main = day6 >>= print
