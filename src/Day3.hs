@@ -7,7 +7,6 @@ import Data.Char
 import Data.Set (Set)
 import qualified Data.Set as Set
 
-
 day3 :: Solver
 day3 = mkSolver 3 $ (\s -> 
     let cont = lines s
