@@ -4,6 +4,7 @@ module Util
     , windows
     , windowsN
     , enumerate
+    , union
     ) where
 
 splitOn :: (a->Bool) -> [a] -> [[a]]
