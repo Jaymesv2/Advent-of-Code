@@ -1,12 +1,11 @@
 module Day4(day4) where
 
+import Solver
 import Control.Arrow
 
-day4 :: IO (Int, Int)
-day4 = do
-    cont <- lines <$> readFile "inputs/day4-1.txt"
-    let calcAnsw f = length $ filter f $ parseInput <$> cont
-    pure (calcAnsw completeOverlap,calcAnsw anyOverlap)
+day4 :: Solver
+day4 = mkSolver 4 $ (calcAnsw completeOverlap &&& calcAnsw anyOverlap) . lines
+        where calcAnsw f = length . (filter f) . fmap parseInput
 
 completeOverlap :: ((Int, Int), (Int,Int)) -> Bool
 --completeOverlap ((a,b), (x,y)) = ((x < a && y > b) || (a < x && b > y))

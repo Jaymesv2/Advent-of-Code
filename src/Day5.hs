@@ -1,6 +1,8 @@
 module Day5(day5) where
 
-import Lib (splitOn)
+import Solver
+import Util
+
 import Text.ParserCombinators.ReadP
 import Data.Char
 import Data.List (transpose, foldl')
@@ -8,28 +10,32 @@ import Control.Applicative ((<|>))
 import Control.Lens
 import Control.Monad (liftM3)
 
-day5 :: IO (String, String)
-day5 = do
-    cont <- lines <$> readFile "inputs/day5-1.txt"
-    let instructions = parseInstructions . last . splitOn (==[]) $ cont
-        initialState = parseStacks . init . head . splitOn (==[]) $ cont
-        finalState = foldl' applyInstruction initialState instructions
-        finalState2 = foldl' applyInstruction2 initialState instructions
-    pure (fmap head $ finalState,fmap head $ finalState2)
+day5 :: Solver
+day5 = mkSolver 5 day5'
 
-applyInstruction, applyInstruction2 :: [[a]] -> (Int, Int, Int) -> [[a]]
+day5' :: String -> (String, String)
+day5' s = let cont = splitOn (==[]) $ lines s
+              instructions = parseInstructions . last $ cont
+              initialState = parseStacks . init . head $ cont
+              eval mover = fmap head $ foldl' mover initialState instructions
+          in (eval craneMover9000,eval craneMover9001)
+
+type Instruction = (Int, Int, Int)
+type State = [[Char]]
+
+craneMover9000, craneMover9001 :: State -> Instruction -> State
 -- moves elements one at a time
-applyInstruction stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ reverse $ take n $ stacks !! (from'-1))
+craneMover9000 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ reverse $ take n $ stacks !! (from'-1))
 -- moves multiple elements at a time
-applyInstruction2 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ take n $ stacks !! (from'-1))
+craneMover9001 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ take n $ stacks !! (from'-1))
 
 -- parses the cells out into a matrix containing the letter in the cell or a null byte if there was no cell. the transpose of the matrix with nulls filtered is returned
-parseStacks :: [String] -> [[Char]]
+parseStacks :: [String] -> State
 parseStacks = fmap (filter (/=chr 0)) . transpose .  fmap (fst . last . readP_to_S parseLine)
     where parseCell = (char '[' *> get <* char ']') <|> (string "   " *> pure (chr 0))
           parseLine = sepBy parseCell (char ' ')
 
-parseInstructions :: [String] -> [(Int, Int, Int)]
+parseInstructions :: [String] -> [Instruction]
 parseInstructions =  fmap $ fst . last . readP_to_S parseInstruction
     where 
         parseInstruction = liftM3 (,,) (f "move ") (f " from ") (f" to ")
