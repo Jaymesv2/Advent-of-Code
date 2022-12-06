@@ -26,5 +26,5 @@ windowsN n = enumerate . windows n
 enumerate :: [a] -> [(Int, a)]
 enumerate = zip [1..]
 
-intersection :: Eq a => [a] -> [a] -> [a]
-intersection xs ys = [x | x <- xs, y <- ys, x == y]
+union :: Eq a => [a] -> [a] -> [a]
+union xs ys = [x | x <- xs, y <- ys, x == y]

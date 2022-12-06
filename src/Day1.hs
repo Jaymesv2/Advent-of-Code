@@ -7,6 +7,6 @@ import Data.List (sort)
 import Control.Arrow
 
 day1 :: Solver
-day1 = mkSolver 1 $ (head &&& sum . take 3) . reverse . sort . sumGroups
+day1 = mkSolver 1 "Calorie Counting" $ (head &&& sum . take 3) . reverse . sort . sumGroups
     where sumGroups = fmap (sum . fmap read) . seperateGroups
           seperateGroups = splitOn (==[]) . lines

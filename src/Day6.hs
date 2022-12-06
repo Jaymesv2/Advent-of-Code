@@ -13,4 +13,4 @@ firstUniqueNLength :: Int -> String -> Int
 firstUniqueNLength n = (+n) . fst . head . filter (uniqueElems . snd) . windowsN n 
 
 day6 :: Solver
-day6 = mkSolver 6 $ (firstUniqueNLength 4 &&& firstUniqueNLength 14)
+day6 = mkSolver 6 "Tuning Trouble" $ (firstUniqueNLength 4 &&& firstUniqueNLength 14)

@@ -11,7 +11,7 @@ import Control.Lens
 import Control.Monad (liftM3)
 
 day5 :: Solver
-day5 = mkSolver 5 day5'
+day5 = mkSolver 5 "Supply Stacks" day5'
 
 day5' :: String -> (String, String)
 day5' s = let cont = splitOn (==[]) $ lines s
@@ -37,6 +37,5 @@ parseStacks = fmap (filter (/=chr 0)) . transpose .  fmap (fst . last . readP_to
 
 parseInstructions :: [String] -> [Instruction]
 parseInstructions =  fmap $ fst . last . readP_to_S parseInstruction
-    where 
-        parseInstruction = liftM3 (,,) (f "move ") (f " from ") (f" to ")
-        f s = string s *> (read <$> munch1 isDigit)
+    where parseInstruction = liftM3 (,,) (f "move ") (f " from ") (f" to ")
+          f s = string s *> (read <$> munch1 isDigit)

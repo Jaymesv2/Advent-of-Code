@@ -4,7 +4,7 @@ import Solver
 import Control.Arrow
 
 day4 :: Solver
-day4 = mkSolver 4 $ (calcAnsw completeOverlap &&& calcAnsw anyOverlap) . lines
+day4 = mkSolver 4 "Camp Cleanup" $ (calcAnsw completeOverlap &&& calcAnsw anyOverlap) . lines
         where calcAnsw f = length . (filter f) . fmap parseInput
 
 completeOverlap :: ((Int, Int), (Int,Int)) -> Bool

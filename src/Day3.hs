@@ -8,7 +8,7 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 
 day3 :: Solver
-day3 = mkSolver 3 $ (\s -> 
+day3 = mkSolver 3 "Rucksack Reorganization" $ (\s -> 
     let cont = lines s
         f = sum . fmap (priorityOf . head . Set.toList)
         a = f $ uncurry Set.intersection . compartments <$> cont
