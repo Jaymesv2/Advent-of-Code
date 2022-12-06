@@ -15,7 +15,6 @@ import Day6
 
 solvers :: [Solver]
 solvers = [day1, day2, day3, day4, day5, day6]
---solvers = [day1]
 
 solutions :: IO [Solution]
 solutions = sequence $ runSolver <$> solvers
