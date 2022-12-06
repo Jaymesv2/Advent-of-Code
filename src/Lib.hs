@@ -1,6 +1,7 @@
 module Lib
     ( solvers
     , solutions
+    , solutionsTable
     ) where
 
 import Solver
@@ -17,3 +18,6 @@ solvers = [day1, day2, day3, day4, day5, day6]
 
 solutions :: IO [Solution]
 solutions = sequence $ runSolver <$> solvers
+
+solutionsTable :: IO String
+solutionsTable = genTable <$> solutions
