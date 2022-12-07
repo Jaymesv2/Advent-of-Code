@@ -1,4 +1,4 @@
-module Day5(day5) where
+module Days.Day5(day5) where
 
 import Solver
 import Util

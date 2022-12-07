@@ -1,4 +1,4 @@
-module Day4(day4) where
+module Days.Day4(day4) where
 
 import Solver
 import Control.Arrow
