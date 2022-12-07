@@ -25,12 +25,12 @@ source-repository head
 
 library
   exposed-modules:
-      Day1
-      Day2
-      Day3
-      Day4
-      Day5
-      Day6
+      Days.Day1
+      Days.Day2
+      Days.Day3
+      Days.Day4
+      Days.Day5
+      Days.Day6
       Lib
       Solver
       Util

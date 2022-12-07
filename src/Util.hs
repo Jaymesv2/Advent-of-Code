@@ -3,7 +3,12 @@ module Util
     , groupsOf
     , windows
     , union
+    , makeTableWithHeaders
+    , fmtMatrix
+    , fmtTable
     ) where
+
+import Data.List (intercalate, transpose)
 
 splitOn :: (a->Bool) -> [a] -> [[a]]
 splitOn on s = uncurry (:) $ fmap f $ break on s 
@@ -21,3 +26,24 @@ windows n xs = let window = take n xs
 
 union :: Eq a => [a] -> [a] -> [a]
 union xs ys = [x | x <- xs, y <- ys, x == y]
+
+makeTableWithHeaders :: [String] -> [[String]] -> String
+makeTableWithHeaders headers columns = fmtTable $ zipWith (:) headers columns
+
+fmtTable, fmtMatrix :: [[String]] -> String
+fmtMatrix = fmtTable' (("", "", ""),("", "", ""),("", "", ""),("", "","")) ' '
+fmtTable  = fmtTable' (("┌", "┬", "┐"), ("├", "┼", "┤"), ("└", "┴", "┘"), ("│","│","│")) '─'
+
+fmtTable' :: ((String, String, String), (String, String, String), (String, String, String), (String, String, String)) -> Char -> [[String]] -> String
+fmtTable' (top, mid, bottom, col) c columns = genSep top ++ intercalate (genSep mid) rows ++ genSep bottom
+    where columnWidths = fmap (maximum . fmap length) columns
+          rows = genSep' (uncurry padTo) col columnWidths <$> transpose columns
+
+          padTo :: Int -> String -> String
+          padTo len s = uncurry (++) $ (s++) <$> splitAt (n `quot` 2) (replicate n ' ') where n = len - length s
+
+          genSep' :: ((Int, String) -> String) -> (String, String, String) -> [Int] -> [String] -> String
+          genSep' f (beg, sep, end) widths row = beg ++ (intercalate sep $ fmap f $ (zip widths row)) ++ end ++ "\n"
+
+          genSep :: (String, String, String) -> String
+          genSep s = genSep' (flip replicate c . fst) s columnWidths (repeat [])

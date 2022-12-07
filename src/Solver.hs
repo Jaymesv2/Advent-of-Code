@@ -8,7 +8,8 @@ module Solver
     ) where
 
 import Text.Printf
-import Data.List (intercalate, unzip4, transpose)
+import Util
+import Data.List (unzip4)
 
 data Solver = Solver Int String (String -> Solution)
 
@@ -27,27 +28,11 @@ runSolver :: Solver -> IO Solution
 runSolver = runSolver' (printf "inputs/%02d.txt")
 
 genTable :: [Solution] -> String
-genTable sols = makeTableWithHeaders [show <$> a,b,c,d] ["Day", "Name", "Part 1", "Part 2"]
+genTable sols = makeTableWithHeaders ["Day", "Name", "Part 1", "Part 2"] [show <$> a,b,c,d]
     where (a,b,c,d) = unzip4 $ fmap solutionToTuple sols
 
-makeTableWithHeaders :: [[String]] -> [String] -> String
-makeTableWithHeaders columns headers = makeTable $ zipWith (:) headers columns
+data BTree a = Branch (BTree a) (BTree a) | Leaf a
 
-
---makeTable :: Show a => [[a]] -> String
-makeTable :: [[String]] -> String
-makeTable columns = genSep columnWidths "┌" "┬" "┐\n" ++ intercalate (genSep columnWidths "├" "┼" "┤\n") rows ++ genSep columnWidths "└" "┴" "┘\n"
-    where
-        columnWidths = fmap (maximum . fmap length) columns
-        rows = (flip formatRow) columnWidths <$> transpose columns
-
-        padTo :: Int -> String -> String
-        padTo len s = uncurry (++) $ (s++) <$> splitAt (n `quot` 2) (replicate n ' ')
-            where n = len - length s
-        
-        genSep :: [Int] -> String -> String -> String -> String
-        genSep widths beg sep end = beg ++ (intercalate sep $ flip replicate '─'  <$> widths) ++ end
-
-        formatRow :: [String] -> [Int] -> String
-        formatRow row widths =  "│" ++ (intercalate "│" $ uncurry padTo <$> x) ++ "│\n"
-            where x = zip widths row
+revBTree :: BTree a -> BTree a
+revBTree (Branch a b) = Branch b a
+revBTree (Leaf a) = Leaf a
