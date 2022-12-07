@@ -40,7 +40,8 @@ library
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
+      array ==0.5.*
+    , base >=4.7 && <5
     , containers ==0.6.*
     , lens >=5.1 && <6
     , text >=1.2 && <2
@@ -56,6 +57,7 @@ executable aoc-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aoc
+    , array ==0.5.*
     , base >=4.7 && <5
     , containers ==0.6.*
     , lens >=5.1 && <6
@@ -73,6 +75,7 @@ test-suite aoc-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aoc
+    , array ==0.5.*
     , base >=4.7 && <5
     , containers ==0.6.*
     , lens >=5.1 && <6

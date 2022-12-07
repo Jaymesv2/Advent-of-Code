@@ -8,7 +8,7 @@ module Solver
     ) where
 
 import Text.Printf
-import Data.List (intercalate, unzip4, zip4)
+import Data.List (intercalate, unzip4, transpose)
 
 data Solver = Solver Int String (String -> Solution)
 
@@ -27,22 +27,27 @@ runSolver :: Solver -> IO Solution
 runSolver = runSolver' (printf "inputs/%02d.txt")
 
 genTable :: [Solution] -> String
-genTable sols = genSep "┌" "┬" "┐\n" ++ intercalate (genSep "├" "┼" "┤\n") (formatRow <$> zip4 ns ds xs ys) ++ genSep "└" "┴" "┘\n"
+genTable sols = makeTableWithHeaders [show <$> a,b,c,d] ["Day", "Name", "Part 1", "Part 2"]
+    where (a,b,c,d) = unzip4 $ fmap solutionToTuple sols
+
+makeTableWithHeaders :: [[String]] -> [String] -> String
+makeTableWithHeaders columns headers = makeTable $ zipWith (:) headers columns
+
+
+--makeTable :: Show a => [[a]] -> String
+makeTable :: [[String]] -> String
+makeTable columns = genSep columnWidths "┌" "┬" "┐\n" ++ intercalate (genSep columnWidths "├" "┼" "┤\n") rows ++ genSep columnWidths "└" "┴" "┘\n"
     where
-        (ln, ld, lx, ly) = (f ns, f ds, f xs, f ys)
-        (ns, ds, xs, ys) = ("Day":fmap show ns', "Name":ds', "Part 1":xs', "Part 2":ys')
-            where (ns', ds', xs', ys') = unzip4 $ fmap solutionToTuple sols
+        columnWidths = fmap (maximum . fmap length) columns
+        rows = (flip formatRow) columnWidths <$> transpose columns
 
-        f :: [String] -> Int
-        f = maximum . fmap length
+        padTo :: Int -> String -> String
+        padTo len s = uncurry (++) $ (s++) <$> splitAt (n `quot` 2) (replicate n ' ')
+            where n = len - length s
+        
+        genSep :: [Int] -> String -> String -> String -> String
+        genSep widths beg sep end = beg ++ (intercalate sep $ flip replicate '─'  <$> widths) ++ end
 
-        pad :: Int -> String -> String
-        pad len s = replicate front ' ' ++ s ++ replicate (neededPadding - front) ' '
-            where neededPadding = len - length s
-                  front = neededPadding `quot` 2
-
-        genSep :: String -> String -> String -> String
-        genSep beg sep end = beg ++ replicate (ln+2) '─' ++ sep ++ replicate (ld+2) '─' ++ sep ++ replicate (lx+2) '─' ++ sep ++ replicate (ly+2) '─' ++ end
-
-        formatRow :: (String, String, String, String) -> String
-        formatRow (n,d,x,y) = "│ " ++ pad ln n ++ " │ " ++ pad ld d  ++ " │ " ++ pad lx x ++ " │ " ++ pad ly y ++ " │\n"
+        formatRow :: [String] -> [Int] -> String
+        formatRow row widths =  "│" ++ (intercalate "│" $ uncurry padTo <$> x) ++ "│\n"
+            where x = zip widths row
