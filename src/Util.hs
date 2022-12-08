@@ -34,7 +34,9 @@ fmtTable, fmtMatrix :: [[String]] -> String
 fmtMatrix = fmtTable' (("", "", ""),("", "", ""),("", "", ""),("", "","")) ' '
 fmtTable  = fmtTable' (("┌", "┬", "┐"), ("├", "┼", "┤"), ("└", "┴", "┘"), ("│","│","│")) '─'
 
-fmtTable' :: ((String, String, String), (String, String, String), (String, String, String), (String, String, String)) -> Char -> [[String]] -> String
+type SepGroup = (String, String, String)
+
+fmtTable' :: (SepGroup, SepGroup, SepGroup, SepGroup) -> Char -> [[String]] -> String
 fmtTable' (top, mid, bottom, col) c columns = genSep top ++ intercalate (genSep mid) rows ++ genSep bottom
     where columnWidths = fmap (maximum . fmap length) columns
           rows = genSep' (uncurry padTo) col columnWidths <$> transpose columns
