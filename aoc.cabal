@@ -33,6 +33,7 @@ library
       Days.Day6
       Days.Day7
       Days.Day8
+      Days.Day9
       Lib
       Solver
       Util
