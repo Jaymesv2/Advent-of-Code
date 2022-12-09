@@ -5,6 +5,7 @@ module Solver
     , mkSolver
     , runSolver
     , genTable
+    , solutionNum
     ) where
 
 import Text.Printf

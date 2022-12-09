@@ -30,8 +30,9 @@ union xs ys = [x | x <- xs, y <- ys, x == y]
 makeTableWithHeaders :: [String] -> [[String]] -> String
 makeTableWithHeaders headers columns = fmtTable $ zipWith (:) headers columns
 
-fmtTable, fmtMatrix :: [[String]] -> String
-fmtMatrix = fmtTable' (("", "", ""),("", "", ""),("", "", ""),("", "","")) ' '
+fmtMatrix :: Show a => [[a]] -> String
+fmtMatrix = fmtTable' (("", "", ""),("", "", ""),("", "", ""),("", " ","")) ' ' . fmap (fmap (show))
+fmtTable :: [[String]] -> String
 fmtTable  = fmtTable' (("┌", "┬", "┐"), ("├", "┼", "┤"), ("└", "┴", "┘"), ("│","│","│")) '─'
 
 type SepGroup = (String, String, String)

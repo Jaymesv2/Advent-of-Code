@@ -2,24 +2,23 @@
 module Main (main) where
 
 import Lib
-import Solver
 import Data.Typeable
 import System.Console.CmdArgs
 
-data AdventOfCode = Day {day :: Int}
+data AdventOfCode = Day {_day :: Int}
           | Table
           | Latest
           deriving (Data,Typeable,Show,Eq)
-          
-day' = Day
-    {day = def &= typ "Day" &= argPos 0
-    } &= help "Print a Day"
 
+day', table', latest' :: AdventOfCode
+day' = Day
+    {_day = def &= typ "Day" &= argPos 0
+    } &= help "Print a Day"
 table' = Table -- &= auto
 latest' = Latest &= auto
 
 main :: IO ()
 main = cmdArgs (modes [day', table', latest']) >>= (\case
-        Day {day = d} -> solutionNTable (d-1)
+        Day {_day = d} -> solutionNTable (d-1)
         Table -> solutionsTable
         Latest -> latestSolutionTable) >>= putStrLn
