@@ -19,9 +19,10 @@ import Days.Day6
 import Days.Day7
 import Days.Day8
 import Days.Day9
+import Days.Day10
 
 solvers :: [Solver]
-solvers = [day1, day2, day3, day4, day5, day6, day7, day8, day9]
+solvers = [day1, day2, day3, day4, day5, day6, day7, day8, day9, day10]
 
 solutions :: IO [Solution]
 solutions = sequence $ runSolver <$> solvers

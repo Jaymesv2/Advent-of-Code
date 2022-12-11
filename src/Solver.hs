@@ -15,6 +15,8 @@ import Data.List (unzip4)
 data Solver = Solver Int String (String -> Solution)
 
 data Solution = forall a b. (Show a, Show b) => Solution Int String a b
+instance Show Solution where
+    show (Solution day name p1 p2) = "Day " ++ show day ++ " \"" ++ name ++ "\", part1: " ++ show p1 ++ ", part2: " ++ show p2
 
 solutionNum :: Solution -> Int
 solutionNum (Solution n _ _ _) = n

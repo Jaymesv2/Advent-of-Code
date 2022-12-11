@@ -22,3 +22,4 @@ main = cmdArgs (modes [day', table', latest']) >>= (\case
         Day {_day = d} -> solutionNTable (d-1)
         Table -> solutionsTable
         Latest -> latestSolutionTable) >>= putStrLn
+        --Latest -> show <$> latestSolution) >>= putStrLn
