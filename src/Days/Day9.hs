@@ -44,6 +44,4 @@ tailTick head' (x:xs) = n:tailTick n xs
                     else (tx - fromEnum (tx > hx) + fromEnum (tx < hx), ty - fromEnum (ty > hy) + fromEnum (ty < hy))
 
 isTouching :: Cordinate -> Cordinate -> Bool
-isTouching (ax, ay) b = b == (ax+1, ay+1) || b == (ax+1, ay) || b == (ax+1, ay-1) 
-                     || b == (ax  , ay+1) || b == (ax  , ay) || b == (ax  , ay-1)
-                     || b == (ax-1, ay+1) || b == (ax-1, ay) || b == (ax-1, ay-1)
+isTouching (ax, ay) (bx, by) = abs (ax - bx) <= 1 && abs (ay - by) <= 1
