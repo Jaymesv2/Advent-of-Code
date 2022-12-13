@@ -52,8 +52,6 @@ library
     , base >=4.7 && <5
     , cmdargs ==0.10.*
     , containers ==0.6.*
-    , fgl >=5.7 && <6
-    , graphviz >=2999.20 && <3000
     , lens >=5.1 && <6
     , parsec ==3.*
     , search-algorithms >=0.3.2 && <0.4
@@ -75,8 +73,6 @@ executable aoc-exe
     , base >=4.7 && <5
     , cmdargs ==0.10.*
     , containers ==0.6.*
-    , fgl >=5.7 && <6
-    , graphviz >=2999.20 && <3000
     , lens >=5.1 && <6
     , parsec ==3.*
     , search-algorithms >=0.3.2 && <0.4
@@ -99,8 +95,6 @@ test-suite aoc-test
     , base >=4.7 && <5
     , cmdargs ==0.10.*
     , containers ==0.6.*
-    , fgl >=5.7 && <6
-    , graphviz >=2999.20 && <3000
     , lens >=5.1 && <6
     , parsec ==3.*
     , search-algorithms >=0.3.2 && <0.4
