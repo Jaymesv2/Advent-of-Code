@@ -1,4 +1,4 @@
-module Util 
+module Util.List
     ( splitOn
     , groupsOf
     , windows

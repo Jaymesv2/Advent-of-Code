@@ -9,7 +9,7 @@ module Solver
     ) where
 
 import Text.Printf
-import Util
+import Util.List
 import Data.List (unzip4)
 
 data Solver = Solver Int String (String -> Solution)

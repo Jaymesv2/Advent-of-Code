@@ -1,7 +1,7 @@
 module Days.Day5(day5) where
 
 import Solver
-import Util
+import Util.List
 
 import Text.ParserCombinators.ReadP
 import Data.Char

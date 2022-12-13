@@ -2,7 +2,7 @@
 module Days.Day10(day10) where
 
 import Solver
-import Util
+import Util.List
 import Control.Arrow
 import Data.List (foldl', intercalate)
 

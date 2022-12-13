@@ -27,6 +27,8 @@ library
   exposed-modules:
       Days.Day1
       Days.Day10
+      Days.Day11
+      Days.Day12
       Days.Day2
       Days.Day3
       Days.Day4
@@ -37,7 +39,7 @@ library
       Days.Day9
       Lib
       Solver
-      Util
+      Util.List
   other-modules:
       Paths_aoc
   hs-source-dirs:
@@ -50,6 +52,7 @@ library
     , containers ==0.6.*
     , lens >=5.1 && <6
     , parsec ==3.*
+    , pqueue >=1.4 && <2
     , text >=1.2 && <2
     , transformers ==0.5.*
     , vector ==0.12.*
@@ -70,6 +73,7 @@ executable aoc-exe
     , containers ==0.6.*
     , lens >=5.1 && <6
     , parsec ==3.*
+    , pqueue >=1.4 && <2
     , text >=1.2 && <2
     , transformers ==0.5.*
     , vector ==0.12.*
@@ -91,6 +95,7 @@ test-suite aoc-test
     , containers ==0.6.*
     , lens >=5.1 && <6
     , parsec ==3.*
+    , pqueue >=1.4 && <2
     , text >=1.2 && <2
     , transformers ==0.5.*
     , vector ==0.12.*

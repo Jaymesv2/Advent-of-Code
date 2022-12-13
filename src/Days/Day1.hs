@@ -1,6 +1,6 @@
 module Days.Day1 (day1) where
 
-import Util
+import Util.List
 import Solver
 
 import Data.List (sort)
