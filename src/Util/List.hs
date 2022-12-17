@@ -3,6 +3,7 @@ module Util.List
     , groupsOf
     , windows
     , union
+    , tupleWindows2
     , makeTableWithHeaders
     , fmtMatrix
     , fmtTable
@@ -18,6 +19,9 @@ groupsOf :: Int -> [a] -> [[a]]
 groupsOf size lst = case splitAt size lst of
     (x, []) -> [x]
     (x, y) -> x:groupsOf size y
+
+tupleWindows2 :: [a] -> [(a,a)]
+tupleWindows2 xs = zip xs $ drop 1 xs
 
 windows :: Int -> [a] -> [[a]]
 windows _ [] = []
