@@ -5,8 +5,7 @@ import Solver
 import Data.Char
 
 import Control.Arrow
-import Data.Maybe
-import Data.List (findIndices, repeat)
+import Data.List (elemIndices)
 import Algorithm.Search
 
 type Matrix a = [[a]]
@@ -17,10 +16,10 @@ day12 = mkSolver 12 "Hill Climbing Algorithm" $ lines >>> (part1 &&& part2)
 
 part1, part2 :: Matrix Char -> Int
 part1 = solve (allXPos 'S' >>> head) (allXPos 'E') (\x y -> x - y >= -1)
-part2 = solve (allXPos 'E' >>> head) (allXPos 'a') (\x y -> y - x >= -1 )
-
+part2 = solve (allXPos 'E' >>> head) (allXPos 'a') (\x y -> y - x >= -1)
+ 
 allXPos :: Char -> Matrix Char -> [Key]
-allXPos x matrix = concat $ zipWith (\y l -> zipWith (,) (repeat y) l) [0..] $ fmap (findIndices (==x)) matrix
+allXPos x matrix = concat $ zipWith (zip . repeat) [0 ..] $ fmap (elemIndices x) matrix
 
 solve :: (Matrix Char -> Key) -> (Matrix Char -> [Key]) -> (Int -> Int -> Bool) -> Matrix Char -> Int
 solve startF endF canMove matrix = length $ maybe [] snd $ dijkstra getNeighbors (\_ _ -> 1) (flip elem $ endF matrix) $ startF matrix
