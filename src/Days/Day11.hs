@@ -11,7 +11,7 @@ import Control.Monad.ST
 import Data.Array.ST
 import Data.Array
 import Data.Char
-import Data.List (sort)
+--import Data.List (sort)
 
 import Text.ParserCombinators.ReadP
 
@@ -33,7 +33,7 @@ parseMonkey = let numP = (read <$> many1 (satisfy isDigit)) in do
     t <- string "\n  Test: divisible by " *> numP
     toT <- string "\n    If true: throw to monkey " *> numP
     toF <- string "\n    If false: throw to monkey " *> numP
-    let inspect = (\x -> ((if o == '*' then (*) else (+)) x $ if s == "old" then x else read s))
+    let inspect x  = (if o == '*' then (*) else (+)) x $ if s == "old" then x else read s
     pure (Monkey inspect t toT toF, items)
 
 --monkeySim :: Int -> [(Monkey, [Int])] -> Int
