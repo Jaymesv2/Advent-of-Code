@@ -16,7 +16,7 @@ day13 = mkSolver 13 "Distress Signal" $ parse >>> (part1 &&& part2)
 parse :: String -> [(NestedList, NestedList)]
 parse = readP_to_S (sepBy1 pairP $ string "\n\n") >>> last >>> fst
     where pairP = liftA2 (,) (lstP <* char '\n') lstP
-          lstP = List <$> (between (char '[') (char ']') $ sepBy (numP <|> lstP) $ char ',' )
+          lstP = List <$> between (char '[') (char ']') (sepBy (numP <|> lstP) $ char ',' )
           numP = Leaf . read <$> many1 (satisfy isDigit)
 
 part1, part2 :: [(NestedList, NestedList)] -> Int
