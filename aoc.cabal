@@ -42,7 +42,6 @@ library
       Days.Day9
       Lib
       Solver
-      Util.Dijkstra
       Util.List
   other-modules:
       Paths_aoc

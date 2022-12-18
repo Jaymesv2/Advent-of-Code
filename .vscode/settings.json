@@ -1,0 +1,13 @@
+{
+    "haskell.ghcupExecutablePath": "${HOME}/.ghcup/bin/ghcup",
+    "haskell.manageHLS": "GHCup",
+    "haskell.toolchain": {
+        "hls": "1.8.0.0",
+        "ghc": "9.2.5",
+        "cabal": "3.8.1.0",
+        "stack": "2.9.1"
+    },
+    "haskell.serverEnvironment": {
+        "PATH": "${HOME}/.ghcup/bin:${PATH}"
+    }
+}
