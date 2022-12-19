@@ -31,8 +31,8 @@ headTick (x,y) ins = case ins of
 
 ropeSimTick :: RopeSimState -> Instruction -> RopeSimState
 ropeSimTick ([], _) _ = error "invalid rope"
-ropeSimTick ((h:t),s) ins = (newRope, S.insert (last newRope) s)
-    where newRope = newHead:(tailTick newHead t)
+ropeSimTick (h:t,s) ins = (newRope, S.insert (last newRope) s)
+    where newRope = newHead:tailTick newHead t
           newHead = headTick h ins
 
 tailTick :: Cordinate -> Rope -> Rope

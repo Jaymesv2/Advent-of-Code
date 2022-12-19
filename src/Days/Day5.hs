@@ -17,7 +17,7 @@ day5' :: String -> (String, String)
 day5' s = let cont = splitOn (==[]) $ lines s
               instructions = parseInstructions . last $ cont
               initialState = parseStacks . init . head $ cont
-              eval mover = fmap head $ foldl' mover initialState instructions
+              eval mover = head <$> foldl' mover initialState instructions
           in (eval craneMover9000,eval craneMover9001)
 
 type Instruction = (Int, Int, Int)
@@ -25,9 +25,9 @@ type State = [[Char]]
 
 craneMover9000, craneMover9001 :: State -> Instruction -> State
 -- moves elements one at a time
-craneMover9000 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ reverse $ take n $ stacks !! (from'-1))
+craneMover9000 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ (++) (reverse $ take n $ stacks !! (from'-1))
 -- moves multiple elements at a time
-craneMover9001 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ ((++) $ take n $ stacks !! (from'-1))
+craneMover9001 stacks (n, from', to') = (stacks & ix (from'-1) %~ drop n) & ix (to'-1) %~ (++) (take n $ stacks !! (from'-1))
 
 -- parses the cells out into a matrix containing the letter in the cell or a null byte if there was no cell. the transpose of the matrix with nulls filtered is returned
 parseStacks :: [String] -> State

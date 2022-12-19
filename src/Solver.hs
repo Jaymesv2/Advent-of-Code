@@ -28,7 +28,7 @@ mkSolver :: (Show a, Show b) => Int -> String -> (String -> (a,b)) -> Solver
 mkSolver d n s = Solver d n (uncurry (Solution d n) . s)
 
 runSolver' :: (Int -> FilePath) -> Solver -> IO Solution
-runSolver' inputFinder (Solver n _ solver) = solver <$> (readFile $ inputFinder n)
+runSolver' inputFinder (Solver n _ solver) = solver <$> readFile (inputFinder n)
 
 runSolver :: Solver -> IO Solution
 runSolver = runSolver' (printf "inputs/%02d.txt")

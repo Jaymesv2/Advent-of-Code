@@ -29,7 +29,7 @@ maxScenicScore hMap = maximum (uncurry (scenicScore hMap) <$> [(x,y) | x <- [1..
 
 -- makes 4 lists containing the trees looking in each direction, calculates how far into that list is visible and multiplies the values
 scenicScore :: [[Int]] -> Int -> Int -> Int
-scenicScore hMap row col = product $ (viewDistance ((hMap !! row) !! col) <$> [l, r, u, d])
+scenicScore hMap row col = product $ viewDistance ((hMap !! row) !! col) <$> [l, r, u, d]
     where (l, r) = (reverse *** tail) $ splitAt col [(hMap !! row) !! x   | x <- [0..length (head hMap)-1]]
           (u, d) = (reverse *** tail) $ splitAt row [(hMap !! x  ) !! col | x <- [0..length hMap-1]]
 

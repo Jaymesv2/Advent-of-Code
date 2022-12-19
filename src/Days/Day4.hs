@@ -5,11 +5,11 @@ import Control.Arrow
 
 day4 :: Solver
 day4 = mkSolver 4 "Camp Cleanup" $ (calcAnsw completeOverlap &&& calcAnsw anyOverlap) . lines
-        where calcAnsw f = length . (filter f) . fmap parseInput
+        where calcAnsw f = length . filter f . fmap parseInput
 
 completeOverlap :: ((Int, Int), (Int,Int)) -> Bool
 --completeOverlap ((a,b), (x,y)) = ((x < a && y > b) || (a < x && b > y))
-completeOverlap ((a,b), (x,y)) = ((a <= x && b >= y) || (x <= a && y >= b))
+completeOverlap ((a,b), (x,y)) = (a <= x && b >= y) || (x <= a && y >= b)
 
 anyOverlap :: ((Int, Int), (Int,Int)) -> Bool
 anyOverlap ((a,b), (x,y)) = (x < b) && (a < y)

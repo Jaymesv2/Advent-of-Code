@@ -1,4 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
 module Days.Day10(day10) where
 
 import Solver
@@ -17,7 +16,7 @@ parseInput = lines >>> fmap parse
           parse _ = Noop
 
 processSignal :: [Int] -> Int
-processSignal = zip [1..] >>> filter (fst >>> ((+) (-20)) >>> (`mod` 40) >>> (==0)) >>> fmap (uncurry (*)) >>> sum
+processSignal = zip [1..] >>> filter (fst >>> (+) (-20) >>> (`mod` 40) >>> (==0)) >>> fmap (uncurry (*)) >>> sum
 
 crtSim :: [Int] -> String
 crtSim = zip (cycle [0..39]) >>> fmap crtSim' >>> groupsOf 40 >>> intercalate "\n"
@@ -28,4 +27,4 @@ cpuSim :: [Instruction] -> [Int]
 cpuSim = foldl' cpuTick (1,[]) >>> snd >>> reverse
     where cpuTick :: (Int, [Int]) -> Instruction -> (Int, [Int])
           cpuTick (reg, xs) (Addx x) = (reg+x, reg:reg:xs)
-          cpuTick (reg, xs) (Noop) = (reg, reg:xs)
+          cpuTick (reg, xs) Noop = (reg, reg:xs)

@@ -14,4 +14,4 @@ firstUniqueNLength :: Int -> String -> Int
 firstUniqueNLength n = (+(n+1)) . head . findIndices uniqueElems . windows n
 
 day6 :: Solver
-day6 = mkSolver 6 "Tuning Trouble" $ (firstUniqueNLength 4 &&& firstUniqueNLength 14)
+day6 = mkSolver 6 "Tuning Trouble" $ firstUniqueNLength 4 &&& firstUniqueNLength 14
