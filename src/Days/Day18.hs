@@ -3,21 +3,20 @@ module Days.Day18(day18) where
 
 import Solver
 
-import Control.Arrow
 import Control.Applicative
-import Text.Parsec hiding (State)
+import Text.Parsec.Text
+import Text.Parsec
 import qualified Data.Set as S
 import qualified Data.Sequence as Se
 import Data.List (foldl', partition)
 
 type Cordinate = (Int,Int,Int)
 
-parseInput :: String -> [Cordinate]
-parseInput inp = case runParser (sepBy1 cordP endOfLine) () "day18" inp of 
-    Right a -> a
-    Left err -> error (show err)
-    where cordP = liftA3 (,,) (numP <* char ',') (numP <* char ',') numP
-          numP = read <$> many1 digit
+parseInput :: Parser [Cordinate]
+parseInput = sepBy1 cordP endOfLine
+    where
+        cordP = liftA3 (,,) (numP <* char ',') (numP <* char ',') numP
+        numP = read <$> many1 digit
 
 maxCords :: Cordinate -> Cordinate -> Cordinate
 maxCords (maxx, maxy, maxz) (x,y,z) = (max x maxx, max y maxy, max z maxz)
@@ -46,4 +45,4 @@ day18' cords@(c:cs) = (part1, part2)
         part2 = length $ findReachable (neighborsInRange $ foldl' maxCords c cs) (`S.member` S.fromList cords) (0,0,0)
 
 day18 :: Solver
-day18 = mkSolver 18 "Boiling Boulders" $ parseInput >>> day18'
+day18 = mkParsecSolver 18 "Boiling Boulders" parseInput day18'
