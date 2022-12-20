@@ -1,18 +1,17 @@
-{-# LANGUAGE TupleSections #-}
 module Days.Day15 (day15) where
 
 import Solver
 
 import Control.Arrow
 import Control.Applicative
-import Text.ParserCombinators.ReadP
-import Data.Char
+import Text.Parsec
+import Text.Parsec.Text
 import Data.List (sortBy, foldl')
 
 type Cordinate = (Int, Int)
 
 day15 :: Solver
-day15 = mkSolver 15 "Beacon Exclusion Zone" $ parseInput >>> (part1 &&& const "unimplemented")
+day15 = mkParsecSolver 15 "Beacon Exclusion Zone" parseInput (part1 &&& const "unimplemented")
 
 part1 :: [(Cordinate, Cordinate)] -> Int
 part1 beacons = length (filter (\x -> any (\(c, b) -> inRangeOf c b (x,y)) beaconDists) [mi..mx])-1
@@ -23,11 +22,11 @@ part1 beacons = length (filter (\x -> any (\(c, b) -> inRangeOf c b (x,y)) beaco
         (mi,mx) = foldl' (\(a1, b1) (a2, b2) -> (min a1 a2, max b1 b2)) (maxBound,minBound) intersections
         intersections = sortBy (\(a,_) (b,_)-> compare a b) $ intersectionsOnLine y <$> beaconDists
 
-parseInput :: String -> [(Cordinate, Cordinate)]
-parseInput = readP_to_S (sepBy1 beaconP $ string "\n") >>> last >>> fst
+parseInput :: Parser [(Cordinate, Cordinate)]
+parseInput = sepEndBy1 beaconP $ string "\n"
     where xyP = liftA2 (,) (string "x=" *> numP) (string ", y=" *> numP)
           beaconP = liftA2 (,) (string "Sensor at " *> xyP) (string ": closest beacon is at " *> xyP)
-          numP = read <$> liftA2 (++) (option "" $ string "-") (many1 $ satisfy isDigit)
+          numP = read <$> liftA2 (++) (option "" $ string "-") (many1 digit)
 
 intersectionsOnLine :: Int -> (Cordinate, Int) -> Cordinate
 intersectionsOnLine y ((bx, by), dist) = if a < b then (a,b) else (b,a) 

@@ -7,20 +7,20 @@ import Control.Applicative
 import Control.Arrow
 import Data.Set as S hiding (foldl')
 import Data.List (foldl', find)
-import Data.Char
-import Text.ParserCombinators.ReadP hiding (between)
+import Text.Parsec hiding (between)
+import Text.Parsec.Text
 
 day14 :: Solver
-day14 = mkSolver 14 "Regolith Reservoir" $ parseInput >>> makeRockSet >>> ((first (\m y -> snd y >= m+1) >>> sandSim) &&& (insertFloor >>> sandSim >>> (+1)))
+day14 = mkParsecSolver 14 "Regolith Reservoir" parseInput $ (first (\m y -> snd y >= m+1) >>> sandSim) &&& (insertFloor >>> sandSim >>> (+1))
 
 type Cordinate = (Int, Int)
 type Rock = [Cordinate]
 
-parseInput :: String -> [Rock]
-parseInput = readP_to_S (sepBy1 rockP $ string "\n") >>> last >>> fst
+parseInput :: Parser (Int, Set Cordinate)
+parseInput = makeRockSet <$> sepEndBy1 rockP (string "\n")
     where rockP = sepBy1 cordP $ string " -> "
           cordP = liftA2 (,) (numP <* char ',') numP
-          numP = read <$> many1 (satisfy isDigit) 
+          numP = read <$> many1 digit
 
 between :: (Cordinate, Cordinate) -> Set Cordinate -- all cords between 2 points
 between ((x1,y1), (x2,y2)) = fromList [(x,y) | x <- [min x1 x2..max x1 x2], y <- [min y1 y2..max y1 y2]]

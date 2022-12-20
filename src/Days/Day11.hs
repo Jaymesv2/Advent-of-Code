@@ -4,32 +4,32 @@ module Days.Day11 (day11) where
 import Solver
 
 import Control.Arrow
-import Control.Applicative
+--import Control.Applicative
 import Control.Monad
 import Control.Monad.ST
 
 import Data.Array.ST
 import Data.Array
-import Data.Char
 --import Data.List (sort)
 
-import Text.ParserCombinators.ReadP
+import Text.Parsec
+import Text.Parsec.Text
 
 day11 :: Solver
-day11 = mkSolver 11 "Monkey in the Middle" $ parseInput >>> (monkeySim 20 &&& monkeySim 10000)
+day11 = mkParsecSolver 11 "Monkey in the Middle" parseInput $ monkeySim 20 &&& monkeySim 10000
 
 --                   inspect     test toT toF
 data Monkey = Monkey (Int -> Int) Int Int Int
 data MonkeySim s = MonkeySim (Array Int Monkey) (STArray s Int ([Int], Int))
 
-parseInput :: String -> [(Monkey, [Int])]
-parseInput = readP_to_S (sepBy parseMonkey $ string "\n\n") >>> last >>> fst
+parseInput :: Parser [(Monkey, [Int])]
+parseInput = sepEndBy1 parseMonkey (endOfLine *> optional endOfLine)
 
-parseMonkey :: ReadP (Monkey, [Int])
-parseMonkey = let numP = (read <$> many1 (satisfy isDigit)) in do 
+parseMonkey :: Parser (Monkey, [Int])
+parseMonkey = let numP = (read <$> many1 digit) in do 
     items <- string "Monkey " *> numP *> string ":\n  Starting items: " *> sepBy numP (string ", ")
-    o <- string "\n  Operation: new = old " *> get <* char ' '
-    s <- string "old" <|> many1 (satisfy isDigit)
+    o <- string "\n  Operation: new = old " *> anyToken <* char ' '
+    s <- string "old" <|> many1 digit
     t <- string "\n  Test: divisible by " *> numP
     toT <- string "\n    If true: throw to monkey " *> numP
     toF <- string "\n    If false: throw to monkey " *> numP

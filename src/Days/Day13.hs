@@ -2,22 +2,22 @@ module Days.Day13(day13) where
 
 import Solver
 
-import Text.ParserCombinators.ReadP
-import Control.Applicative ((<|>), liftA2)
+import Control.Applicative (liftA2)
 import Control.Arrow
 import Data.List (sortBy, findIndices)
-import Data.Char
+import Text.Parsec
+import Text.Parsec.Text
 
 data NestedList = List [NestedList] | Leaf Int deriving (Show)
 
 day13 :: Solver
-day13 = mkSolver 13 "Distress Signal" $ parse >>> (part1 &&& part2)
+day13 = mkParsecSolver 13 "Distress Signal" parser (part1 &&& part2)
 
-parse :: String -> [(NestedList, NestedList)]
-parse = readP_to_S (sepBy1 pairP $ string "\n\n") >>> last >>> fst
+parser :: Parser [(NestedList, NestedList)]
+parser = sepEndBy1 pairP $ endOfLine *> optional endOfLine
     where pairP = liftA2 (,) (lstP <* char '\n') lstP
           lstP = List <$> between (char '[') (char ']') (sepBy (numP <|> lstP) $ char ',' )
-          numP = Leaf . read <$> many1 (satisfy isDigit)
+          numP = Leaf . read <$> many1 digit
 
 part1, part2 :: [(NestedList, NestedList)] -> Int
 part1 = findIndices ((==LT) . uncurry compareLst) >>> fmap (+1) >>> sum
